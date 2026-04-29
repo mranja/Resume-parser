@@ -1,0 +1,1 @@
+"""Smart Recruitment backend package."""
