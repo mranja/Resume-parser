@@ -3,185 +3,114 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TalentSignal | Smart Recruitment</title>
-    <link rel="stylesheet" href="/static/styles.css" />
+    <title>TalentSignal | GenAI Smart Recruitment & Resume Intelligence</title>
+    
+    <!-- Favicon & App Icon -->
+    <link rel="icon" type="image/svg+xml" href="/static/logo.svg" />
+    <link rel="apple-touch-icon" href="/static/logo.svg" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Toastify CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <!-- Tailwind CSS 3 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Plus Jakarta Sans', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              brand: {
+                50: '#eef2ff',
+                100: '#e0e7ff',
+                500: '#6366f1',
+                600: '#4f46e5',
+                700: '#4338ca',
+              }
+            },
+            boxShadow: {
+              'card': '0 2px 12px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02)',
+              'card-hover': '0 16px 36px -6px rgba(0, 0, 0, 0.08), 0 6px 12px -4px rgba(0, 0, 0, 0.02)',
+              'sheet': '0 6px 24px rgba(0, 0, 0, 0.05)',
+              'float': '0 20px 40px -10px rgba(79, 70, 229, 0.15)',
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Toastify JS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <!-- React 18 & ReactDOM 18 CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel for in-browser JSX compilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+      body {
+        background-color: #f8fafc;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      /* Custom modern scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 999px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* Float animations */
+      @keyframes floatSlow {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-8px); }
+      }
+      @keyframes floatSlowDelayed {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      .animate-float {
+        animation: floatSlow 4s ease-in-out infinite;
+      }
+      .animate-float-delayed {
+        animation: floatSlowDelayed 5s ease-in-out 1.5s infinite;
+      }
+
+      /* Keyframe animation for AI Insight spotlight */
+      @keyframes insightGlow {
+        0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5); transform: translateY(-2px); }
+        50% { box-shadow: 0 0 0 8px rgba(99, 102, 241, 0.2); transform: translateY(-2px); }
+        100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); transform: translateY(0); }
+      }
+      .animate-insight {
+        animation: insightGlow 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+    </style>
   </head>
-  <body>
-    <section id="landingPage" class="landing-view">
-      <canvas id="signalCanvas" aria-hidden="true"></canvas>
+  <body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen">
+    <!-- React Root Mount Container -->
+    <div id="root" class="min-h-screen w-full flex flex-col"></div>
 
-      <header class="landing-nav">
-        <a class="brand-lockup" href="/">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>
-            <strong>TalentSignal</strong>
-            <small>Resume intelligence</small>
-          </span>
-        </a>
-        <button id="navOpenDashboard" class="ghost-button" type="button">Open dashboard</button>
-      </header>
-
-      <main class="landing-hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Local AI recruitment lab</p>
-          <h1>TalentSignal Resume Intelligence</h1>
-          <p class="hero-lede">
-            Convert resume PDFs into clean candidate records, skill signals, and ranked shortlists with an interface that feels closer to a hiring command center than a form dump.
-          </p>
-          <div class="hero-actions">
-            <button id="enterDashboard" class="primary-button" type="button">Launch workspace</button>
-            <a class="text-link" href="#landingPreview">See workflow</a>
-          </div>
-        </div>
-      </main>
-
-      <section id="landingPreview" class="landing-preview" aria-label="Workflow preview">
-        <article class="signal-tile">
-          <span>01</span>
-          <strong>Parse</strong>
-          <p>Upload PDFs and extract contact, education, skill, and experience signals.</p>
-        </article>
-        <article class="signal-tile">
-          <span>02</span>
-          <strong>Profile</strong>
-          <p>Store structured candidate and job data in a local SQL database.</p>
-        </article>
-        <article class="signal-tile">
-          <span>03</span>
-          <strong>Rank</strong>
-          <p>Score each profile against role requirements with explainable match details.</p>
-        </article>
-      </section>
-    </section>
-
-    <section id="dashboardPage" class="dashboard-view is-hidden">
-      <header class="app-topbar">
-        <a class="brand-lockup app-brand" href="/">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>
-            <strong>TalentSignal</strong>
-            <small>Smart recruitment console</small>
-          </span>
-        </a>
-        <div class="topbar-actions">
-          <button id="backLanding" class="ghost-button" type="button">Landing</button>
-          <button id="refreshButton" class="secondary-button" type="button">Refresh</button>
-        </div>
-      </header>
-
-      <main class="app-layout">
-        <section class="dashboard-hero">
-          <div>
-            <p class="eyebrow">Recruiting workspace</p>
-            <h2>Build a shortlist from messy resumes in minutes.</h2>
-          </div>
-          <div class="metric-strip" aria-label="Dashboard metrics">
-            <div class="metric">
-              <span id="metricCandidates">0</span>
-              <small>Candidates</small>
-            </div>
-            <div class="metric">
-              <span id="metricJobs">0</span>
-              <small>Roles</small>
-            </div>
-            <div class="metric">
-              <span id="metricMatches">0</span>
-              <small>Matches</small>
-            </div>
-          </div>
-        </section>
-
-        <section class="tool-panel upload-panel">
-          <div class="panel-heading">
-            <div>
-              <p class="section-kicker">Intake</p>
-              <h3>Resume dropzone</h3>
-            </div>
-            <span id="candidateCount">0 candidates</span>
-          </div>
-          <form id="resumeForm" class="stack">
-            <label>
-              Candidate name
-              <input name="full_name" type="text" placeholder="Optional override" />
-            </label>
-            <label class="file-zone">
-              <span>Resume PDF</span>
-              <input name="resume" type="file" accept="application/pdf" required />
-            </label>
-            <button class="primary-button" type="submit">Upload and parse</button>
-          </form>
-        </section>
-
-        <section class="tool-panel job-panel">
-          <div class="panel-heading">
-            <div>
-              <p class="section-kicker">Role signal</p>
-              <h3>Job profile</h3>
-            </div>
-            <span id="jobCount">0 jobs</span>
-          </div>
-          <form id="jobForm" class="stack">
-            <div class="split">
-              <label>
-                Role
-                <input name="title" type="text" placeholder="AI/ML Intern" required />
-              </label>
-              <label>
-                Company
-                <input name="company" type="text" value="Internal" required />
-              </label>
-            </div>
-            <label>
-              Minimum experience
-              <input name="min_years_experience" type="number" min="0" step="0.5" value="0" />
-            </label>
-            <label>
-              Description
-              <textarea name="description" rows="7" placeholder="Paste role requirements, tools, responsibilities, and must-have skills." required></textarea>
-            </label>
-            <button class="primary-button" type="submit">Create role</button>
-          </form>
-        </section>
-
-        <section class="tool-panel match-panel">
-          <div class="panel-heading">
-            <div>
-              <p class="section-kicker">Match lab</p>
-              <h3>Candidate ranking</h3>
-            </div>
-            <button id="matchButton" class="secondary-button" type="button" disabled>Score matches</button>
-          </div>
-          <label>
-            Active role
-            <select id="jobSelect"></select>
-          </label>
-          <div id="matchList" class="rankings"></div>
-        </section>
-
-        <section class="data-panel candidate-panel">
-          <div class="panel-heading">
-            <div>
-              <p class="section-kicker">Talent ledger</p>
-              <h3>Candidates</h3>
-            </div>
-          </div>
-          <div id="candidateList" class="list"></div>
-        </section>
-
-        <section class="data-panel roles-panel">
-          <div class="panel-heading">
-            <div>
-              <p class="section-kicker">Role archive</p>
-              <h3>Jobs</h3>
-            </div>
-          </div>
-          <div id="jobList" class="list compact"></div>
-        </section>
-      </main>
-    </section>
-
-    <div id="toast" role="status" aria-live="polite"></div>
-
-    <script src="/static/app.js"></script>
+    <!-- React Application Component -->
+    <script type="text/babel" src="/static/app.jsx"></script>
   </body>
 </html>
