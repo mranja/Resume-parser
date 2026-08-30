@@ -1,0 +1,74 @@
+{
+  "candidates": [
+    {
+      "id": "c1",
+      "text": "Aria Chen\nEmail: aria.chen@techmail.com | Phone: 555-019-2834 | San Francisco, CA\nSummary: Senior Python & Cloud Backend Engineer with 5+ years building distributed services.\nSkills: Python, FastAPI, Docker, Kubernetes, PostgreSQL, Redis, AWS, REST APIs, Git\nExperience:\nStaff Software Engineer at CloudScale (2021-Present, 3.5 yrs)\n- Architected high-throughput FastAPI microservices processing 12M events daily.\n- Optimized PostgreSQL query execution by 42% using index tuning and Redis caching.\nSoftware Engineer at DataCore (2019-2021, 2 yrs)\n- Developed distributed data processing pipelines using Python and Docker.\nEducation:\nBachelor of Science in Computer Science, UC Berkeley, 2019",
+      "expected": {
+        "full_name": "Aria Chen",
+        "email": "aria.chen@techmail.com",
+        "years_experience": 5.0,
+        "skills": ["python", "fastapi", "docker", "kubernetes", "postgresql", "redis", "aws", "git"]
+      }
+    },
+    {
+      "id": "c2",
+      "text": "Marcus Vance\nEmail: marcus.vance@devpro.io | Phone: 555-482-9102 | Austin, TX\nSummary: Frontend & Fullstack Developer with 3 years experience in modern JavaScript ecosystems.\nSkills: React, TypeScript, JavaScript, HTML, CSS, Node.js, Next.js, GraphQL, Git\nExperience:\nFrontend Developer at PixelForge (2021-Present, 3 yrs)\n- Built responsive dashboard web applications using React and TypeScript.\n- Implemented reusable component libraries and state management with Redux.\nEducation:\nBachelor of Arts in Interactive Media, UT Austin, 2021",
+      "expected": {
+        "full_name": "Marcus Vance",
+        "email": "marcus.vance@devpro.io",
+        "years_experience": 3.0,
+        "skills": ["react", "typescript", "javascript", "html", "css", "node.js", "git"]
+      }
+    },
+    {
+      "id": "c3",
+      "text": "Elena Rostova\nEmail: elena.r@ai-labs.org | Phone: 555-839-1120 | New York, NY\nSummary: Machine Learning Engineer with 4 years deploying computer vision and NLP models.\nSkills: Python, PyTorch, TensorFlow, Scikit-Learn, Docker, SQL, Pandas, NumPy, Git\nExperience:\nMachine Learning Specialist at VisionWorks (2020-Present, 4 yrs)\n- Trained and containerized transformer models for semantic search and retrieval.\n- Reduced model latency by 35% with TensorRT optimizations.\nEducation:\nMaster of Science in Artificial Intelligence, Columbia University, 2020",
+      "expected": {
+        "full_name": "Elena Rostova",
+        "email": "elena.r@ai-labs.org",
+        "years_experience": 4.0,
+        "skills": ["python", "pytorch", "tensorflow", "scikit-learn", "docker", "sql", "git"]
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "id": "j1",
+      "title": "Senior Backend Engineer (Python/Cloud)",
+      "min_years_experience": 4.0,
+      "required_skills": ["Python", "FastAPI", "PostgreSQL", "Docker", "AWS"],
+      "description": "Seeking an experienced Senior Backend Engineer to architect scalable cloud microservices. Must have deep expertise in Python, FastAPI, PostgreSQL database design, containerization with Docker, and cloud deployments on AWS. 4+ years required.",
+      "ground_truth_matches": {
+        "c1": 92.0,
+        "c2": 28.0,
+        "c3": 65.0
+      }
+    },
+    {
+      "id": "j2",
+      "title": "Machine Learning Platform Engineer",
+      "min_years_experience": 3.0,
+      "required_skills": ["Python", "PyTorch", "Docker", "SQL"],
+      "description": "Looking for a Machine Learning Platform Engineer to build scalable model serving pipelines. Strong proficiency in Python, PyTorch or TensorFlow, Docker containers, and SQL databases required. 3+ years required.",
+      "ground_truth_matches": {
+        "c1": 68.0,
+        "c2": 22.0,
+        "c3": 95.0
+      }
+    }
+  ],
+  "rag_tests": [
+    {
+      "candidate_id": "c1",
+      "query": "Does Aria Chen have experience with PostgreSQL query optimization and Redis caching?",
+      "expected_answer_contains": "postgresql",
+      "must_be_grounded": true
+    },
+    {
+      "candidate_id": "c1",
+      "query": "Has Aria Chen ever worked with Rust or Swift for iOS mobile development?",
+      "expected_answer_contains": "not enough information",
+      "must_be_grounded": false
+    }
+  ]
+}

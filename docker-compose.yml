@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: talentsignal-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg://recruiter:recruiter_secret@postgres:5432/recruitment_db
+      - UPLOAD_DIR=uploads
+      - MAX_UPLOAD_MB=8
+      - LLM_PROVIDER=${LLM_PROVIDER:-mock}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-local}
+      - VECTOR_STORE=${VECTOR_STORE:-sqlite}
+      - REQUIRE_AUTH=${REQUIRE_AUTH:-false}
+    volumes:
+      - app-uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: talentsignal-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: recruiter
+      POSTGRES_PASSWORD: recruiter_secret
+      POSTGRES_DB: recruitment_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U recruiter -d recruitment_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  app-uploads:
+  postgres-data:
